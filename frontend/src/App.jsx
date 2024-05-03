@@ -52,7 +52,7 @@ import EditTableDetailsPage from './components/pages/EditTableDetailsPage.jsx'
         return (<Signup setPage={setPage}/>)
       }
       case "eDashboard": {
-        return(<EDashboard userData={userData} tableData={tableData} setTableData = {setTableData}/>)
+        return(<EDashboard userData={userData} setPage={setPage} tableData={tableData} setTableData = {setTableData}/>)
 
       }
       case "editTableDetials":{

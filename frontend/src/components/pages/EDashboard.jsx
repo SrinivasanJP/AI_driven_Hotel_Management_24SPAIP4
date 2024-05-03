@@ -7,6 +7,7 @@ import { FaCircle } from 'react-icons/fa';
 import { IoTabletLandscape } from "react-icons/io5";
 import { MdOutlineChair } from 'react-icons/md';
 import EditTableDetailsPage from './EditTableDetailsPage';
+
 const TableCard = ({isReserved, onTableClick,id,isMine})=>{
   return (
     <div className=' relative justify-center items-center flex  w-[25em] h-[24em] bg-gray-900 rounded-3xl cursor-pointer' onClick={onTableClick}>
@@ -32,7 +33,7 @@ const TableCard = ({isReserved, onTableClick,id,isMine})=>{
     
   )
 }
-const EDashboard = ({userData, tableData, setTableData}) => {
+const EDashboard = ({userData, tableData, setTableData, setPage}) => {
   const [fragment,setFragment] = useState("tableFragment")
   const handleLogout = async () =>{
     await auth?.signOut()
@@ -70,7 +71,7 @@ const EDashboard = ({userData, tableData, setTableData}) => {
         )
     case "editPage":{
       return(
-        <EditTableDetailsPage tableData={tableData[index]} setFragment={setFragment} />
+        <EditTableDetailsPage tableData={tableData[index]} setFragment={setFragment} getTableData={getTableData} />
       )
     }
       default:

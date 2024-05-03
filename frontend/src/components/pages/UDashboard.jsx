@@ -98,7 +98,6 @@ const handleTableClick = async(id) => {
           <h1>Smart Restaurant management system</h1>
         <h1>Welcome {userData.name}</h1>
         </div>
-      <button>Confirm Table</button>
       </div>
       <div className=' bg-slate-950 m-10 p-5'>
         <h1 className=' text-3xl font-bold'>Book your Table</h1>
