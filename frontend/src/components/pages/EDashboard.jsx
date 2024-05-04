@@ -8,6 +8,7 @@ import { IoTabletLandscape } from "react-icons/io5";
 import { MdOutlineChair } from 'react-icons/md';
 import EditTableDetailsPage from './EditTableDetailsPage';
 import Profile from '../fragments/Profile';
+import EOrderDetails from '../fragments/EOrderDetails';
 
 const TableCard = ({isReserved, onTableClick,id,isMine})=>{
   return (
@@ -77,6 +78,8 @@ const EDashboard = ({userData, tableData, setTableData, setPage}) => {
     }
       case "profile":
         return <Profile userData={userData} setPage={setPage}/>
+      case "orderDetails":
+        return(<EOrderDetails orders={tableData}/>)
       default:
         break;
     }
@@ -91,13 +94,10 @@ const EDashboard = ({userData, tableData, setTableData, setPage}) => {
         <ul className=' flex gap-7'>
           <li className=' cursor-pointer hover:scale-110 transition-all delay-200' onClick={()=>setFragment("tableFragment")}>Dashboard</li>
           <li className=' cursor-pointer hover:scale-110 transition-all delay-200' onClick={()=>setFragment("orderDetails")}>Order details</li>
-          <li className=' cursor-pointer hover:scale-110 transition-all delay-200' onClick={()=>setFragment("reservedTableDetails")}>Reserved Table details</li>
           <li className=' cursor-pointer hover:scale-110 transition-all delay-200' onClick={()=>setFragment("profile")}>Profile</li>
         </ul>
       </div>
  {renderFragment()}
-      
-      <button className='w-[80%] bg-slate-950 m-10 p-5 text-2xl rounded-3xl' onClick={handleLogout}>Logout</button>
     </div>
   )
 }
