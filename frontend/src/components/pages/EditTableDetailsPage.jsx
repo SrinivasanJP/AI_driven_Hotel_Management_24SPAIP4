@@ -125,7 +125,7 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
                 </tr>
             </thead>
             <tbody>
-                {preOrder
+                {preOrder.filter(val=>val.product!="")
                     .map((order, index) => (
                         <tr key={index}>
                             <td>{order.product}</td>
@@ -139,15 +139,36 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
 <div className='w-[48%] m-5 bg-slate-900 p-10 rounded-2xl'>
 
 {preOrder && <BarChart
-        dataset={preOrder} 
+        dataset={preOrder.filter(val=>val.product!="")} 
         xAxis={[
           { scaleType: 'band', dataKey: 'product', tickPlacement:"middle", tickLabelPlacement:"middle" },
         ]}
         {...chartSetting}
       />}
 </div>
+
         </div>
         </>}
+        <div className='flex flex-col w-[80%] bg-slate-900 m-5 p-10 rounded-2xl '>
+          <h1 className='text-2xl'>Order details for this table</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
+            <tbody>
+            {tableData?.data?.orderDetails.filter(val=>val.product!="").map((val,ind)=>(
+              <tr key={ind}>
+                <td>{val.product}</td>
+                <td>{val.quantity}</td>
+              </tr>
+))}
+            </tbody>
+          </table>
+          
+        </div>
         <button className='w-[80%] bg-slate-950 m-10 p-5 text-2xl rounded-3xl' onClick={()=>handleFreeTable()}>Free Table</button>
 <button className='w-[80%] bg-slate-950 m-10 p-5 text-2xl rounded-3xl' onClick={()=>setFragment("tableFragment")}>Back to Home page</button>
 
