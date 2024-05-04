@@ -3,10 +3,13 @@ import {QRCodeSVG} from 'qrcode.react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../../config/firebase';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
+import { BarChart } from '@mui/x-charts/BarChart';
+import { axisClasses } from '@mui/x-charts/ChartsAxis';
 const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
     const [tableUserData, setTableUserData] = useState({})
+    const [showAll, setShowAll] = useState(false)
     const [val,setVal] = useState("")
-    console.log(val)
+
     const [preOrder, setPreOrder] = useState()
     const [currentOrder, setCurrentOrder] = useState([])
     const getTableUserData = async()=>{
@@ -15,13 +18,11 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
         if(docs?.exists()){
           setTableUserData(docs.data())
           setPreOrder(docs.data().preOrder)
-          console.log(docs.data())
         }else{
           console.log("No data available")
         }
       });
     }
-    console.log(tableUserData)
     useEffect(()=>{
       if(tableData?.data?.isReserved){
       getTableUserData()
@@ -36,40 +37,6 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
         setFragment("tableFragment")
       })
     } 
-
-
-    const [order,setOrder] = useState({product:"", quantity:""})
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setOrder({...order,[name]:value})
-  };
-
-  const handleAddOrder = () => {
-    const newdata = currentOrder
-    newdata.push(order)
-    setCurrentOrder(newdata)
-    setOrder({product:"", quantity:""})
-  };
-
-  const handleSubmit = async(event) => {
-    event.preventDefault();
-    console.log(currentOrder);
-    const docRef = doc(db,"user",tableData?.data?.user)
-    await setDoc(docRef,{...tableUserData,preOrder:currentOrder}).then(()=>{
-      toast.success('Order plased', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "dark",
-        transition: Bounce,
-        });
-        setCurrentOrder([])
-    })
-  };
-
   const handleVal = (e) =>{
     e.preventDefault()
     if(val == tableData?.data?.user?.slice(0,4)){
@@ -83,6 +50,7 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
         theme: "dark",
         transition: Bounce,
         });
+        setShowAll(true)
     }else{
       toast.error('Table Reservation is not verified', {
         position: "top-right",
@@ -96,6 +64,22 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
         })
     }
   }
+  const valueFormatter = (value) => `${value}mm`;
+  const chartSetting = {
+    yAxis: [
+      {
+        label: 'No. of the test',
+      },
+    ],
+    series: [{dataKey:"quantity",label: 'Predited bar chart', valueFormatter, }],
+    height: 300,
+    sx: {
+      [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
+        transform: 'translateX(-10px)',
+      },
+    },
+  };
+  
   return (
     <div className='flex justify-center items-center text-white flex-col w-full'>
              <ToastContainer />
@@ -107,7 +91,9 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
               <input type="submit" value="Submit"  className='bg-slate-300 py-2 px-5 rounded-xl text-black' />
             </form>
         </div>
-        <div className='w-[80%] bg-slate-900 m-10 p-5 rounded-xl'>
+
+        {showAll && <>
+          <div className='w-[80%] bg-slate-900 m-10 p-5 rounded-xl'>
           <h1 className='text-3xl'>User data:</h1>
           <table className=' table-auto w-full'>
             <tbody>
@@ -135,7 +121,7 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
             <thead>
                 <tr>
                     <th>Product</th>
-                    <th>Quantity</th>
+                    <th>Confidence</th>
                 </tr>
             </thead>
             <tbody>
@@ -150,55 +136,18 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
         </table>
     )}
 </div>
+<div className='w-[48%] m-5 bg-slate-900 p-10 rounded-2xl'>
 
-          <div className=' flex flex-col bg-slate-900 p-10 w-[48%] rounded-2xl m-5 '>
-          <h1 className=' text-2xl mb-5'>Order Menu</h1>
-      <form onSubmit={(e)=>handleSubmit(e)} className=' flex flex-col justify-center items-center'>
-          <div className='flex justify-between items-center w-full'>
-            <input
-            className='text-black p-3 focus:outline-none rounded-xl'
-              type="text"
-              placeholder="Product"
-              name="product"
-              value={order.product}
-              onChange={(event) => handleInputChange(event)}
-            />
-            <input
-            className='text-black p-3 focus:outline-none rounded-xl'
-              type="number"
-              placeholder="Quantity"
-              name="quantity"
-              value={order.quantity}
-              onChange={(event) => handleInputChange(event)}
-            />
-          </div>
-        <button type="button" className='text-black p-3 mt-5 focus:outline-none bg-white  rounded-xl w-full' onClick={handleAddOrder}>
-          + Add Order
-        </button>
-        <button className='text-black p-3 m-5 focus:outline-none bg-white  rounded-xl w-full' type="submit">Submit Orders</button>
-      </form>
-      <div>
-  <table className='w-full table-auto'>
-    <thead>
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-      </tr>
-    </thead>
-    <tbody>
-      {currentOrder.map((value,index)=>(
-        <tr key={index}>
-          <td>{value.product}</td>
-          <td>
-            {value.quantity}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+{preOrder && <BarChart
+        dataset={preOrder} 
+        xAxis={[
+          { scaleType: 'band', dataKey: 'product', tickPlacement:"middle", tickLabelPlacement:"middle" },
+        ]}
+        {...chartSetting}
+      />}
 </div>
-          </div>
         </div>
+        </>}
         <button className='w-[80%] bg-slate-950 m-10 p-5 text-2xl rounded-3xl' onClick={()=>handleFreeTable()}>Free Table</button>
 <button className='w-[80%] bg-slate-950 m-10 p-5 text-2xl rounded-3xl' onClick={()=>setFragment("tableFragment")}>Back to Home page</button>
 

@@ -7,6 +7,7 @@ import { FaCircle } from 'react-icons/fa';
 import { IoTabletLandscape } from "react-icons/io5";
 import { MdOutlineChair } from 'react-icons/md';
 import EditTableDetailsPage from './EditTableDetailsPage';
+import Profile from '../fragments/Profile';
 
 const TableCard = ({isReserved, onTableClick,id,isMine})=>{
   return (
@@ -74,6 +75,8 @@ const EDashboard = ({userData, tableData, setTableData, setPage}) => {
         <EditTableDetailsPage tableData={tableData[index]} setFragment={setFragment} getTableData={getTableData} />
       )
     }
+      case "profile":
+        return <Profile userData={userData} setPage={setPage}/>
       default:
         break;
     }
@@ -85,6 +88,12 @@ const EDashboard = ({userData, tableData, setTableData, setPage}) => {
           <h1>Smart Restaurant management system</h1>
         <h1>Welcome {userData.name}</h1>
         </div>
+        <ul className=' flex gap-7'>
+          <li className=' cursor-pointer hover:scale-110 transition-all delay-200' onClick={()=>setFragment("tableFragment")}>Dashboard</li>
+          <li className=' cursor-pointer hover:scale-110 transition-all delay-200' onClick={()=>setFragment("orderDetails")}>Order details</li>
+          <li className=' cursor-pointer hover:scale-110 transition-all delay-200' onClick={()=>setFragment("reservedTableDetails")}>Reserved Table details</li>
+          <li className=' cursor-pointer hover:scale-110 transition-all delay-200' onClick={()=>setFragment("profile")}>Profile</li>
+        </ul>
       </div>
  {renderFragment()}
       

@@ -11,7 +11,7 @@ const Home = ({ setPage }) => {
         style={{
           backgroundImage: `url(${bg})`,
           backgroundSize: 'cover',
-          objectFit: 'cover', // Ensures the image is cropped while covering the entire element
+          objectFit: 'cover', 
         }}
       >
         <div className=' backdrop-blur-xl p-10 text-white w-[80%] lg:w-[50%] rounded-r-xl'>

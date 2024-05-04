@@ -10,6 +10,7 @@ import UDashboard from './components/pages/UDashboard.jsx'
 import { ToastContainer } from 'react-toastify';
 import Home from './components/pages/Home.jsx'
 import EditTableDetailsPage from './components/pages/EditTableDetailsPage.jsx'
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
  function App(){
   const [userData,setUserData] = useState({})
   const [tableData,setTableData] = useState([])
@@ -69,9 +70,16 @@ import EditTableDetailsPage from './components/pages/EditTableDetailsPage.jsx'
         return null
     }
   }
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
   return (
     <div>
-      {renderPage()}
+       <ThemeProvider theme={darkTheme}>
+       {renderPage()}
+       </ThemeProvider>
     </div>
   )
 }
