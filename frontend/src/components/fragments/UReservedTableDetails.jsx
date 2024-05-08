@@ -54,7 +54,7 @@ const UReservedTableDetails = ({tableData}) => {
         )
       }
   return (
-    <div className='flex w-screen'>
+    <div className='flex w-screen flex-wrap'>
         {userTable.map((val,ind)=>(
             <div key={ind} className=' flex w-full justify-evenly m-10'>
                 <TableCard id={val.id}  isMine={true} isReserved={true} />
@@ -67,7 +67,7 @@ const UReservedTableDetails = ({tableData}) => {
                         { scaleType: 'band', dataKey: 'product', tickPlacement:"middle", tickLabelPlacement:"middle" },
                         ]}
                         {...chartSetting}
-                        width={500}
+                        width={400}
                         height={400}
                     />
                 </div> }

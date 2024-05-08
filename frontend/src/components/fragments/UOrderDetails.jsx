@@ -1,7 +1,7 @@
 import React from 'react'
 import { PieChart } from '@mui/x-charts/PieChart';
 const UOrderDetails = ({orders}) => {
-    const formatedData = orders.map((values,index)=>({id:index,value:values.quantity,label:values.product}))
+    const formatedData = orders?.map((values,index)=>({id:index,value:values.quantity,label:values.product}))
 
   return (
     <div className='flex w-screen justify-between items-center h-screen flex-col lg:flex-row'>

@@ -120,7 +120,7 @@ const [order,setOrder] = useState({product:"", quantity:""})
     if(tableIndex !=-1)
     await setDoc(tableRef, {...tableData[tableIndex].data,orderDetails:currentOrder})
 
-    let preData = userData?.preOrder
+    let preData = userData?.preOrder || []
     preData = preData.concat(currentOrder)
     await setDoc(docRef,{...userData,preOrder:preData}).then(()=>{
       toast.success('Order plased', {
@@ -209,7 +209,7 @@ const [order,setOrder] = useState({product:"", quantity:""})
           </>
         )
       case "orderDetails":
-        return <UOrderDetails orders = {userData?.preOrder}/>
+        return <UOrderDetails orders = {userData?.preOrder || []}/>
       case "reservedTableDetails":
         return <UReservedTableDetails tableData ={tableData} />
       case "profile":

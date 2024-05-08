@@ -7,7 +7,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
     const [tableUserData, setTableUserData] = useState({})
-    const [showAll, setShowAll] = useState(false)
+    const [showAll, setShowAll] = useState(true)
     const [val,setVal] = useState("")
 
     const [preOrder, setPreOrder] = useState()
@@ -159,7 +159,7 @@ const EditTableDetailsPage = ({tableData, setFragment,getTableData}) => {
               </tr>
             </thead>
             <tbody>
-            {tableData?.data?.orderDetails.filter(val=>val.product!="").map((val,ind)=>(
+            {tableData?.data?.orderDetails?.filter(val=>val.product!="").map((val,ind)=>(
               <tr key={ind}>
                 <td>{val.product}</td>
                 <td>{val.quantity}</td>
